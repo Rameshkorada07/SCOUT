@@ -1,0 +1,496 @@
+/* Loading and Reveal Animation Styles */
+
+/* Main Content Container */
+.reveal-container {
+  min-height: 100vh;
+  background: #ffffff;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Top Left Brand */
+.brand-text {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: all 0.8s ease-out;
+}
+.brand-text p {
+  color: #000;
+font-family: 'Roboto', sans-serif;
+font-size: 14px;
+font-style: normal;
+font-weight: 400;
+line-height: 140%; /* 19.6px */
+letter-spacing: 0.28px;
+}
+.brand-text p button {
+  color: #000;
+font-family: 'Roboto', sans-serif;
+font-size: 14px;
+font-style: normal;
+font-weight: 400;
+line-height: 140%;
+letter-spacing: 0.28px;
+text-decoration-line: underline;
+text-decoration-style: dotted;
+text-decoration-skip-ink: auto;
+text-decoration-thickness: 12%;
+text-underline-offset: 16%;
+text-underline-position: from-font;
+}
+
+.brand-text.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.brand-text h1 {
+  color: #000;
+font-family: 'Roboto', sans-serif;
+font-size: 80px;
+font-style: normal;
+font-weight: 300;
+line-height: 100%; /* 80px */
+letter-spacing: -5.6px;
+text-transform: uppercase;
+}
+
+/* Center Oval Container */
+.oval-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  rotate: -12deg;
+}
+
+.oval-shape {
+  width: 1400px;
+  height: 450px;
+  border-radius: 50%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transform: rotateX(15deg);
+}
+
+/* Oval Loading State */
+.oval-shape.loading {
+  background: #ffffff;
+  position: relative;
+}
+
+/* SVG Border Overlay */
+.oval-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.3s ease-out;
+}
+
+.oval-svg.fade-out {
+  opacity: 0;
+}
+
+/* Loading Percentage */
+.loading-percentage {
+  color: #292929;
+font-family: Roboto;
+font-size: 16px;
+font-style: normal;
+font-weight: 400;
+line-height: 140%; /* 22.4px */
+  animation: fadeIn 0.3s ease-in;
+  rotate: 12deg;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Oval Loaded State with Image */
+.oval-shape.loaded {
+  background: #ffffff;
+  border: none;
+}
+
+.oval-image {
+  background: linear-gradient(0deg, rgba(36, 36, 36, 0.20) 0%, rgba(36, 36, 36, 0.20) 100%), url("/center2.JPG"); 
+  width: 100%;
+  height: 100%;
+background-position: center;
+background-size: cover;
+background-repeat: no-repeat;
+  opacity: 0;
+  transform: scale(0.1);
+  animation: imageZoomOut 0.4s ease-out forwards;
+}
+
+@keyframes imageZoomOut {
+  0% {
+    opacity: 0;
+    transform: scale(0.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* CO-WORKING Button */
+.co-working-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  opacity: 0;
+  animation: buttonFadeIn 0.5s ease-out forwards;
+  rotate: 12deg;
+  cursor: pointer;
+}
+
+@keyframes buttonFadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.button-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.button-text {
+  position: relative;
+  color: #ffffff;
+  font-family: 'Roboto', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  text-align: center;
+  line-height: 50px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  pointer-events: none;
+  width: 160px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Bottom Right Content */
+.bottom-content {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  text-align: left;
+  max-width: 320px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s ease-out 0.3s;
+}
+
+.bottom-content.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.description {
+  color: #292929;
+font-family: 'Roboto', sans-serif;
+font-size: 16px;
+font-style: normal;
+font-weight: 400;
+line-height: 140%;
+margin-bottom: 12px;
+}
+
+/* CTA Button */
+.cta-button {
+  display: flex;
+  padding: 24px 36px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  align-self: stretch;
+  width: 100%;
+  background: #000000;
+  border: 2px solid #000000;
+  padding: 24px 32px;
+  border-radius: 500px;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  margin-bottom: 8px;
+  color: #F7F7F7;
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 115%; /* 18.4px */
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #ffffff;
+  transform: translateY(100%);
+  transition: transform 0.4s ease;
+  z-index: 0;
+}
+
+.cta-button span {
+  position: relative;
+  z-index: 2;
+  transition: opacity 0.3s ease;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.cta-button:hover {
+  border-color: #000000;
+
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.cta-button:hover::before {
+  transform: translateY(0);
+}
+
+.cta-button:hover span {
+  opacity: 1;
+}
+
+.cta-button:hover .arrows-container {
+  animation: moveArrows 2s linear infinite;
+  opacity: 1;
+}
+
+.cta-button:hover .arrow {
+  color: #000000 !important;
+}
+
+.cta-button:active {
+  transform: translateY(0);
+}
+
+.arrows-container {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  width: 100%;
+  overflow: hidden;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.arrow {
+  font-size: 28px;
+  font-weight: bold;
+  transition: color 0.3s ease;
+  color: #000000;
+}
+
+@keyframes moveArrows {
+  0% {
+    transform: translateY(-50%) translateX(0);
+  }
+  100% {
+    transform: translateY(-50%) translateX(20px);
+  }
+}
+
+.waitlist-text-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  align-self: stretch;
+}
+
+.waitlist-text {
+  color: #292929;
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%;
+  letter-spacing: 0.28px;
+  text-decoration: none; /* remove default underline */
+  cursor: pointer;
+
+  /* Create a dotted underline using background */
+  background-image: repeating-linear-gradient(to right, #292929 0 2px, transparent 2px 4px);
+  background-position: 0 100%; /* position at bottom */
+  background-size: 6px 2px; /* 6px width for each repeat, 2px height */
+  background-repeat: repeat-x;
+  padding-bottom: 2px;
+
+  /* Animate the dots */
+  animation: moveDots 1s linear infinite;
+}
+
+@keyframes moveDots {
+  0% {
+    background-position: 0 100%;
+  }
+  100% {
+    background-position: 6px 100%;
+  }
+}
+
+
+/* Responsive Design - Tablet */
+@media (max-width: 1024px) {
+  .brand-text {
+    top: 15px;
+    left: 15px;
+  }
+  
+  .brand-text h1 {
+    font-size: 32px;
+  }
+  
+  .oval-shape {
+    width: 984px;
+    height: 316px;
+    transform: rotateX(15deg);
+  }
+  
+  .loading-percentage {
+    font-size: 40px;
+  }
+  
+  .button-text {
+    font-size: 10px;
+    width: 120px;
+    height: 40px;
+  }
+  
+  .bottom-content {
+    bottom: 15px;
+    right: 15px;
+    max-width: 280px;
+  }
+}
+
+/* Responsive Design - Mobile */
+@media (max-width: 768px) {
+  .reveal-container {
+    padding: 20px;
+    flex-direction: column;
+  }
+  
+  .brand-text {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.8s ease-out;
+  }
+  
+  .brand-text h1 {
+font-size: 115px;
+font-style: normal;
+font-weight: 300;
+line-height: 100%; /* 118px */
+letter-spacing: -5.9px;
+text-transform: uppercase;
+margin: 10.5px;
+  }
+  .brand-text p {
+text-align: center;
+font-family: Roboto;
+font-size: 13px;
+font-style: normal;
+font-weight: 400;
+line-height: 140%; /* 18.2px */
+letter-spacing: 0.26px;
+  }
+  .brand-text p button {
+font-size: 13px;
+font-style: normal;
+font-weight: 400;
+line-height: 140%;
+letter-spacing: 0.26px;
+  }
+
+  
+  .oval-shape {
+    width: 353px;
+    height: 114px;
+    transform: rotateX(12deg);
+    margin: 187px auto 153px auto;
+  }
+  
+   .loading-percentage {
+ font-size: 16px;
+ font-style: normal;
+ font-weight: 400;
+ line-height: 140%; /* 22.4px */
+   }
+   
+   .button-text {
+     font-size: 8px;
+     width: 80px;
+     height: 30px;
+   }
+  
+  .bottom-content {
+    position: static;
+    text-align: center;
+    max-width: 100%;
+  }
+  
+  .description {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+  
+  .cta-button {
+    padding: 12px 28px;
+    font-size: 13px;
+    margin-bottom: 16px;
+  }
+}
