@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import React from "react";
 import "./JoinWaitlist.css";
 import { useNavigate } from "react-router-dom";
@@ -6,21 +6,96 @@ import { useNavigate } from "react-router-dom";
 const JoinWaitlist = () => {
   const [details, setDetails] = useState({ name: "", email: "" });
   const [submitted, setSubmitted] = useState(false);
+  const navigate = useNavigate();
+
+  // Images
+  const images = [
+    "/main.jpg",
+    "/co-living.jpg",
+    "/flights.jpg",
+    "/sim.jpg",
+    "/insurance.jpg",
+    "/visa.jpg"
+  ];
+
+  const [currentImage, setCurrentImage] = useState(0);
+  const [showButton, setShowButton] = useState(false);
+
+  // SVG ellipse ref for button animation
+  const buttonEllipseRef = useRef(null);
+  const buttonRafRef = useRef(null);
+
+  // Slideshow + button animation sync
+  useEffect(() => {
+    setShowButton(false);
+
+    // trigger button after slight delay
+    setTimeout(() => {
+      setShowButton(true);
+    }, 200);
+
+    // change image after 4s (same as button duration)
+    const timeout = setTimeout(() => {
+      setCurrentImage((prev) => (prev + 1) % images.length);
+    }, 4000);
+
+    return () => clearTimeout(timeout);
+  }, [currentImage, images.length]);
+
+  // Animate the ellipse border each time button is shown
+  useEffect(() => {
+    if (!showButton) return;
+    const buttonEl = buttonEllipseRef.current;
+    if (!buttonEl) return;
+
+    const buttonRx = 80;
+    const buttonRy = 25;
+    const circumference =
+      Math.PI *
+      (3 * (buttonRx + buttonRy) -
+        Math.sqrt((3 * buttonRx + buttonRy) * (buttonRx + 3 * buttonRy)));
+
+    buttonEl.style.strokeDasharray = circumference;
+    buttonEl.style.strokeDashoffset = circumference;
+
+    const duration = 4000;
+    const start = performance.now();
+
+    function animate(now) {
+      const t = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - t, 3);
+      buttonEl.style.strokeDashoffset = circumference * (1 - eased);
+
+      if (t < 1) {
+        buttonRafRef.current = requestAnimationFrame(animate);
+      } else {
+        buttonEl.style.strokeDashoffset = 0;
+      }
+    }
+
+    buttonRafRef.current = requestAnimationFrame(animate);
+
+    return () => {
+      if (buttonRafRef.current) cancelAnimationFrame(buttonRafRef.current);
+    };
+  }, [showButton]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setSubmitted(true);
   };
-  const navigate = useNavigate();
 
   return (
     <div className="waitlist-section">
 
+      {/* LEFT SIDE */}
       <div className="waitlist-left">
         <h1 className="heading">SCOUT</h1>
         <p className="top-right-link">
-          Product of <button onClick={() => navigate('/explore-nomad')}>Explore Nomad</button>
+          Product of{" "}
+          <button onClick={() => navigate("/explore-nomad")}>Explore Nomad</button>
         </p>
+
         <div className="waitlist-form">
           {submitted ? (
             <div className="thank-you">
@@ -61,14 +136,51 @@ const JoinWaitlist = () => {
         </div>
       </div>
 
-      <div className="waitlist-right">
+      {/* RIGHT SIDE */}
+      <div
+        className="waitlist-right"
+        style={{
+          backgroundImage: `linear-gradient(
+              0deg,
+              rgba(22,22,22,0.35) 0%,
+              rgba(22,22,22,0.35) 100%
+            ), url(${images[currentImage]})`
+        }}
+      >
         <div className="right-content">
-            <button>Co-Working</button>
-            <p>The all in one place built for digital nomads by digital nomads</p>
+          {showButton && (
+            <div className="co-working-button2">
+              <svg
+                className="button-svg2"
+                viewBox="0 0 160 50"
+                preserveAspectRatio="xMidYMid meet"
+              >
+                <ellipse
+                  ref={buttonEllipseRef}
+                  cx="80"
+                  cy="25"
+                  rx="80"
+                  ry="25"
+                  fill="none"
+                  stroke="#ffffff"
+                  strokeWidth="1"
+                  strokeLinecap="round"
+                />
+              </svg>
+              <div className="button-text2">CO-WORKING</div>
+            </div>
+          )}
+
+          <p>The all in one place built for digital nomads by digital nomads</p>
         </div>
-        <button onClick={() => navigate('/values-of-waitlist')} className="bottom-right-link">Values of waitlist</button>
+
+        <button
+          onClick={() => navigate("/values-of-waitlist")}
+          className="bottom-right-link"
+        >
+          Values of waitlist
+        </button>
       </div>
-      
     </div>
   );
 };

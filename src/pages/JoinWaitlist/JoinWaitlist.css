@@ -134,20 +134,17 @@ line-height: 150%; /* 24px */
 
   .waitlist-right {
     width: 60%;
-    background: linear-gradient(
-        0deg,
-        rgba(22,22,22,0.35) 0%,
-        rgba(22,22,22,0.35) 100%
-      ),
-      url("/center.JPG");
     background-position: center;
     background-size: cover;
-    background-repeat: no-repeat;   /* center horizontally */
+    background-repeat: no-repeat;
     color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
+    transition: background-image 1s ease-in-out; /* smooth fade */
   }
+  
   .waitlist-right .right-content {
     display: flex;
     flex-direction: column;
@@ -165,6 +162,35 @@ line-height: 150%; /* 24px */
         cursor: pointer;
     border: 1px solid #fff;
   }
+  .co-working-button2 {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 160px;
+    height: 50px;       /* ensures the ellipse & text share the same box */
+  }
+  
+  
+  .button-svg2 {
+    width: 160px;
+    height: 50px;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .button-text2 {
+    position: relative;
+    color: white;
+    font-size: 16px;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;    /* centers vertically */
+    justify-content: center; /* centers horizontally */
+    height: 100%;           /* uses parent height (ellipse) */
+  }
+  
+  
   .bottom-right-link {
     position: absolute;
     right: 20px;
@@ -222,12 +248,7 @@ text-underline-position: from-font;
       min-height: 100vh;
       justify-content: space-between;
     }
-  
-    .waitlist-right {
-      width: 100%;
-      min-height: 100vh;
-      position: inherit;
-    }
+
   
     .top-right-link {
       color: #000;
@@ -277,5 +298,51 @@ text-underline-position: from-font;
   font-style: normal;
   font-weight: 400;
   line-height: 150%; /* 24px */
+    }
+
+    .waitlist-right {
+      width: 100%;
+      min-height: 100vh;
+      display: flex;           /* make flex container */
+      flex-direction: column;
+      align-items: center;     /* horizontal center */
+      justify-content: center; /* vertical center */
+      position: relative;
+      text-align: center;
+    }
+  
+    .right-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center; /* center content vertically */
+      max-width: 90%;
+      gap: 10px;
+    }
+  
+    .co-working-button2 {
+      position: relative; /* keep relative for proper flow */
+      margin-bottom: 15px; /* spacing below button */
+      width: 120px;       /* smaller button width on mobile */
+      height: 35px;       /* smaller button height */
+    }
+  
+    .button-svg2 {
+      width: 100%;
+      height: 100%;
+    }
+  
+    .button-text2 {
+      font-size: 12px;    /* smaller text */
+      line-height: 35px;  /* vertically center text inside button */
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  
+    .right-content p {
+      font-size: 14px;
+      line-height: 20px;
     }
   }

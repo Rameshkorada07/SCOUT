@@ -423,30 +423,19 @@ margin-bottom: 12px;
   
   .brand-text {
     position: absolute;
-    top: 0px;
-    left: 0px;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.8s ease-out;
+    top: 20px;
+    left: 0;              /* stretch to full width */
+    right: 0;
+    width: 100%;
+    text-align: center;   /* center content inside */
+    margin: 0 auto;
   }
-  
-  .brand-text h1 {
-font-size: 115px;
-font-style: normal;
-font-weight: 300;
-line-height: 100%; /* 118px */
-letter-spacing: -5.9px;
-text-transform: uppercase;
-margin: 10.5px;
-  }
+.brand-text h1 {
+  font-size: 113px;
+}
+  .brand-text h1,
   .brand-text p {
-text-align: center;
-font-family: Roboto;
-font-size: 13px;
-font-style: normal;
-font-weight: 400;
-line-height: 140%; /* 18.2px */
-letter-spacing: 0.26px;
+    text-align: center;
   }
   .brand-text p button {
 font-size: 13px;
@@ -478,19 +467,25 @@ letter-spacing: 0.26px;
    }
   
   .bottom-content {
-    position: static;
-    text-align: center;
-    max-width: 100%;
+    max-width: 90%;
+    position: absolute;
+    bottom: 20px;
+    left: 0;              /* stretch to full width */
+    right: 0;
+    text-align: center;   /* center content inside */
+    margin: 0 auto;
   }
   
   .description {
     font-size: 16px;
     margin-bottom: 20px;
+    font-weight: 400;
   }
   
   .cta-button {
-    padding: 12px 28px;
+    padding: 24px 36px;
     font-size: 13px;
     margin-bottom: 16px;
   }
+  /* Mobile adjustments for co-working button */
 }
