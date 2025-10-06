@@ -8,14 +8,28 @@ const JoinWaitlist = () => {
   const [submitted, setSubmitted] = useState(false);
   const navigate = useNavigate();
 
-  // Images
-  const images = [
+ const images = [
     "/main.jpg",
     "/co-living.jpg",
     "/flights.jpg",
     "/sim.jpg",
     "/insurance.jpg",
-    "/visa.jpg"
+    "/visa.jpg",
+    "/community.jpg",
+    "nomad-news.jpg",
+    "nomad-stories.jpg"
+  ];
+
+  const buttonLabels = [
+    "CO-WORKING",
+    "CO-LIVING",
+    "FLIGHTS",
+    "SIM",
+    "INSURANCE",
+    "VISA",
+    "COMMUNITY",
+    "NOMAD NEWS",
+    "NOMAD STORIES"
   ];
 
   const [currentImage, setCurrentImage] = useState(0);
@@ -30,16 +44,19 @@ const JoinWaitlist = () => {
     setShowButton(false);
 
     // trigger button after slight delay
-    setTimeout(() => {
+    const showBtnTimer = setTimeout(() => {
       setShowButton(true);
     }, 200);
 
     // change image after 4s (same as button duration)
-    const timeout = setTimeout(() => {
+    const changeImgTimer = setTimeout(() => {
       setCurrentImage((prev) => (prev + 1) % images.length);
     }, 4000);
 
-    return () => clearTimeout(timeout);
+    return () => {
+      clearTimeout(showBtnTimer);
+      clearTimeout(changeImgTimer);
+    };
   }, [currentImage, images.length]);
 
   // Animate the ellipse border each time button is shown
@@ -87,13 +104,14 @@ const JoinWaitlist = () => {
 
   return (
     <div className="waitlist-section">
-
       {/* LEFT SIDE */}
       <div className="waitlist-left">
         <h1 className="heading">SCOUT</h1>
         <p className="top-right-link">
           Product of{" "}
-          <button onClick={() => navigate("/explore-nomad")}>Explore Nomad</button>
+          <button onClick={() => navigate("/explore-nomad")}>
+            Explore Nomad
+          </button>
         </p>
 
         <div className="waitlist-form">
@@ -167,7 +185,9 @@ const JoinWaitlist = () => {
                   strokeLinecap="round"
                 />
               </svg>
-              <div className="button-text2">CO-WORKING</div>
+              <div className="button-text2">
+                {buttonLabels[currentImage]}
+              </div>
             </div>
           )}
 

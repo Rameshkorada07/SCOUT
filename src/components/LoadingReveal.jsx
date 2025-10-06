@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react'; 
 import './LoadingReveal.css';
 import { useNavigate } from "react-router-dom";
 
@@ -11,7 +11,10 @@ const LoadingReveal = () => {
     "/flights.jpg",
     "/sim.jpg",
     "/insurance.jpg",
-    "/visa.jpg"
+    "/visa.jpg",
+    "/community.jpg",
+    "/nomad-news.jpg",
+    "/nomad-stories.jpg"
   ];
 
   const buttonLabels = [
@@ -20,26 +23,29 @@ const LoadingReveal = () => {
     "FLIGHTS",
     "SIM",
     "INSURANCE",
-    "VISA"
+    "VISA",
+    "COMMUNITY",
+    "NOMAD NEWS",
+    "NOMAD STORIES"
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [showContent, setShowContent] = useState(false);
   const [showButton, setShowButton] = useState(false);
-  const [loadingProgress, setLoadingProgress] = useState(0); // Added for loading numbers
+  const [loadingProgress, setLoadingProgress] = useState(0);
+
+  const [firstImageAnimating, setFirstImageAnimating] = useState(true);
 
   const ellipseRef = useRef(null);
   const buttonEllipseRef = useRef(null);
   const rafRef = useRef(null);
   const buttonRafRef = useRef(null);
 
-  const SLIDE_DURATION = 6000; // 6 seconds per slide
+  const SLIDE_DURATION = 6000;
 
-  // Get responsive dimensions
   const getResponsiveDimensions = () => {
     const screenWidth = window.innerWidth;
-
     if (screenWidth <= 768) {
       return { width: 353, height: 114, viewBox: "0 0 353 114", cx: 176.5, cy: 57, rx: 176.5, ry: 57 };
     } else if (screenWidth <= 1024) {
@@ -69,11 +75,7 @@ const LoadingReveal = () => {
       const t = Math.min(1, (now - start) / totalDuration);
       const eased = 1 - Math.pow(1 - t, 3);
 
-      // Update stroke
-      const offset = circumference * (1 - eased);
-      el.style.strokeDashoffset = `${offset}`;
-
-      // Update loading number
+      el.style.strokeDashoffset = `${circumference * (1 - eased)}`;
       setLoadingProgress(Math.floor(eased * 100));
 
       if (t < 1) {
@@ -93,7 +95,7 @@ const LoadingReveal = () => {
     return () => cancelAnimationFrame(rafRef.current);
   }, []);
 
-  // Handle slideshow + button border animation
+  // Handle slideshow + button animation
   useEffect(() => {
     if (!showButton) return;
 
@@ -121,7 +123,6 @@ const LoadingReveal = () => {
         buttonRafRef.current = requestAnimationFrame(animate);
       } else {
         buttonEl.style.strokeDashoffset = 0;
-        // Move to next slide
         setCurrentIndex((prev) => (prev + 1) % images.length);
       }
     }
@@ -136,38 +137,38 @@ const LoadingReveal = () => {
       <div className={`brand-text ${showContent ? 'visible' : ''}`}>
         <h1>SCOUT</h1>
         <p>
-          Product of{" "}
-          <button onClick={() => navigate('/explore-nomad')}>Explore Nomad</button>
+          Product of <button onClick={() => navigate('/explore-nomad')}>Explore Nomad</button>
         </p>
       </div>
 
       {/* Center Oval */}
       <div className="oval-container">
         <div className={`oval-shape ${isLoading ? 'loading' : 'loaded'}`}>
-          {/* Loading number */}
-          {isLoading && (
-            <div className="loading-percentage">
-              {String(loadingProgress).padStart(3, '0')}
-            </div>
-          )}
+          {isLoading && <div className="loading-percentage">{String(loadingProgress).padStart(3, '0')}</div>}
 
           {!isLoading && (
-            <div
-              className="oval-image"
-              style={{
-                backgroundImage: `linear-gradient(0deg, rgba(36,36,36,0.20), rgba(36,36,36,0.20)), url(${images[currentIndex]})`
-              }}
-            />
+            <div className="oval-image-wrapper">
+              {images.map((img, index) => (
+                <div
+                  key={index}
+                  className={`oval-image ${
+                    currentIndex === index ? 'active' : ''
+                  } ${index === 0 && firstImageAnimating ? 'first-image' : ''}`}
+                  style={{
+                    backgroundImage: `linear-gradient(0deg, rgba(36,36,36,0.20), rgba(36,36,36,0.20)), url(${img})`,
+                  }}
+                  onAnimationEnd={() => {
+                    if(index === 0) setFirstImageAnimating(false);
+                  }}
+                />
+              ))}
+            </div>
           )}
 
           {/* Dynamic Button */}
           {showButton && (
             <div className="co-working-button">
-              <svg
-                className="button-svg"
-                viewBox="0 0 160 50"
-                preserveAspectRatio="xMidYMid meet"
-              >
+              <svg className="button-svg" viewBox="0 0 160 50" preserveAspectRatio="xMidYMid meet">
                 <ellipse
                   ref={buttonEllipseRef}
                   cx="80"
@@ -185,12 +186,8 @@ const LoadingReveal = () => {
           )}
         </div>
 
-        {/* SVG Border Drawing */}
-        <svg
-          className={`oval-svg ${!isLoading ? 'fade-out' : ''}`}
-          viewBox={dimensions.viewBox}
-          preserveAspectRatio="xMidYMid meet"
-        >
+        {/* SVG Border */}
+        <svg className={`oval-svg ${!isLoading ? 'fade-out' : ''}`} viewBox={dimensions.viewBox} preserveAspectRatio="xMidYMid meet">
           <ellipse
             ref={ellipseRef}
             cx={dimensions.cx}
@@ -212,21 +209,12 @@ const LoadingReveal = () => {
         </p>
 
         <button onClick={() => navigate('/join-waitlist')} className="cta-button">
-          <div className="arrows-container">
-            {Array(36).fill(0).map((_, i) => (
-              <span key={i} className="arrow">→</span>
-            ))}
-          </div>
+          <div className="arrows-container">{Array(36).fill(0).map((_, i) => <span key={i} className="arrow">→</span>)}</div>
           <span>→ Join waitlist</span>
         </button>
 
         <div className="waitlist-text-container">
-          <button
-            onClick={() => navigate('/values-of-waitlist')}
-            className="waitlist-text"
-          >
-            Values of waitlist
-          </button>
+          <button onClick={() => navigate('/values-of-waitlist')} className="waitlist-text">Values of waitlist</button>
         </div>
       </div>
     </div>
