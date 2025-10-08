@@ -143,8 +143,34 @@ line-height: 150%; /* 24px */
     justify-content: center;
     position: relative;
     transition: background-image 1s ease-in-out; /* smooth fade */
+    overflow: hidden;
   }
-  
+  /* ---- Smooth Fade Image Transition ---- */
+
+
+.fade-image {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.fade-image.current {
+  opacity: 1;
+  z-index: 0;
+}
+
+.fade-image.previous {
+  opacity: 0;
+  z-index: 0;
+}
+.waitlist-right .right-content p {
+  z-index: 2;
+}
+
   .waitlist-right .right-content {
     display: flex;
     flex-direction: column;
@@ -346,3 +372,27 @@ text-underline-position: from-font;
       line-height: 20px;
     }
   }
+
+  /* Make top-right link always visible and on top */
+.always-visible {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  color: #ffffff; /* Black by default (works on white left panel) */
+  z-index: 9999;
+}
+
+.always-visible button {
+  color: #ffffff;
+}
+
+/* When in mobile (dark background), switch to white */
+@media (max-width: 600px) {
+  .always-visible {
+    color: #000000;
+  }
+
+  .always-visible button {
+    color: #000000;
+  }
+}

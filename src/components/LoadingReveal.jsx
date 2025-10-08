@@ -6,25 +6,25 @@ const LoadingReveal = () => {
   const navigate = useNavigate();
 
   const images = [
+    "/community.jpg",
     "/main.jpg",
     "/co-living.jpg",
     "/flights.jpg",
     "/sim.jpg",
     "/insurance.jpg",
     "/visa.jpg",
-    "/community.jpg",
     "/nomad-news.jpg",
     "/nomad-stories.jpg"
   ];
 
   const buttonLabels = [
+    "COMMUNITY",
     "CO-WORKING",
     "CO-LIVING",
     "FLIGHTS",
     "SIM",
     "INSURANCE",
     "VISA",
-    "COMMUNITY",
     "NOMAD NEWS",
     "NOMAD STORIES"
   ];
@@ -155,7 +155,7 @@ const LoadingReveal = () => {
                     currentIndex === index ? 'active' : ''
                   } ${index === 0 && firstImageAnimating ? 'first-image' : ''}`}
                   style={{
-                    backgroundImage: `linear-gradient(0deg, rgba(36,36,36,0.20), rgba(36,36,36,0.20)), url(${img})`,
+                    backgroundImage: `linear-gradient(0deg, rgba(36, 36, 36, 0.20) 0%, rgba(36, 36, 36, 0.20) 100%), url(${img})`,
                   }}
                   onAnimationEnd={() => {
                     if(index === 0) setFirstImageAnimating(false);

@@ -8,48 +8,46 @@ const JoinWaitlist = () => {
   const [submitted, setSubmitted] = useState(false);
   const navigate = useNavigate();
 
- const images = [
+  const images = [
+    "/community.jpg",
     "/main.jpg",
     "/co-living.jpg",
     "/flights.jpg",
     "/sim.jpg",
     "/insurance.jpg",
     "/visa.jpg",
-    "/community.jpg",
     "nomad-news.jpg",
     "nomad-stories.jpg"
   ];
 
   const buttonLabels = [
+    "COMMUNITY",
     "CO-WORKING",
     "CO-LIVING",
     "FLIGHTS",
     "SIM",
     "INSURANCE",
     "VISA",
-    "COMMUNITY",
     "NOMAD NEWS",
     "NOMAD STORIES"
   ];
 
   const [currentImage, setCurrentImage] = useState(0);
+  const [prevImage, setPrevImage] = useState(null);
   const [showButton, setShowButton] = useState(false);
 
-  // SVG ellipse ref for button animation
   const buttonEllipseRef = useRef(null);
   const buttonRafRef = useRef(null);
 
-  // Slideshow + button animation sync
   useEffect(() => {
     setShowButton(false);
 
-    // trigger button after slight delay
     const showBtnTimer = setTimeout(() => {
       setShowButton(true);
     }, 200);
 
-    // change image after 4s (same as button duration)
     const changeImgTimer = setTimeout(() => {
+      setPrevImage(currentImage);
       setCurrentImage((prev) => (prev + 1) % images.length);
     }, 4000);
 
@@ -59,7 +57,6 @@ const JoinWaitlist = () => {
     };
   }, [currentImage, images.length]);
 
-  // Animate the ellipse border each time button is shown
   useEffect(() => {
     if (!showButton) return;
     const buttonEl = buttonEllipseRef.current;
@@ -104,15 +101,17 @@ const JoinWaitlist = () => {
 
   return (
     <div className="waitlist-section">
+      {/* ✅ Always visible top-right link */}
+      <p className="top-right-link always-visible">
+        Product of{" "}
+        <button onClick={() => navigate("/explore-nomad")}>
+          Explore Nomad
+        </button>
+      </p>
+
       {/* LEFT SIDE */}
       <div className="waitlist-left">
         <h1 className="heading">SCOUT</h1>
-        <p className="top-right-link">
-          Product of{" "}
-          <button onClick={() => navigate("/explore-nomad")}>
-            Explore Nomad
-          </button>
-        </p>
 
         <div className="waitlist-form">
           {submitted ? (
@@ -154,17 +153,25 @@ const JoinWaitlist = () => {
         </div>
       </div>
 
-      {/* RIGHT SIDE */}
-      <div
-        className="waitlist-right"
-        style={{
-          backgroundImage: `linear-gradient(
-              0deg,
-              rgba(22,22,22,0.35) 0%,
-              rgba(22,22,22,0.35) 100%
-            ), url(${images[currentImage]})`
-        }}
-      >
+      {/* RIGHT SIDE with smooth fade */}
+      <div className="waitlist-right">
+        {prevImage !== null && (
+          <div
+            key={prevImage}
+            className="fade-image previous"
+            style={{
+              backgroundImage: `linear-gradient(0deg, rgba(22, 22, 22, 0.35), rgba(22, 22, 22, 0.35)), url(${images[prevImage]})`
+            }}
+          />
+        )}
+        <div
+          key={currentImage}
+          className="fade-image current"
+          style={{
+            backgroundImage: `linear-gradient(0deg, rgba(22, 22, 22, 0.35), rgba(22, 22, 22, 0.35)), url(${images[currentImage]})`
+          }}
+        />
+
         <div className="right-content">
           {showButton && (
             <div className="co-working-button2">
