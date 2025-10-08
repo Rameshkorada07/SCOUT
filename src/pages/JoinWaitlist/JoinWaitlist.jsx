@@ -16,8 +16,8 @@ const JoinWaitlist = () => {
     "/sim.jpg",
     "/insurance.jpg",
     "/visa.jpg",
-    "nomad-news.jpg",
-    "nomad-stories.jpg"
+    "/nomad-news.jpg",
+    "/nomad-stories.jpg"
   ];
 
   const buttonLabels = [
@@ -32,31 +32,29 @@ const JoinWaitlist = () => {
     "NOMAD STORIES"
   ];
 
-  const [currentImage, setCurrentImage] = useState(0);
-  const [prevImage, setPrevImage] = useState(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [firstImageAnimating, setFirstImageAnimating] = useState(true);
   const [showButton, setShowButton] = useState(false);
 
   const buttonEllipseRef = useRef(null);
   const buttonRafRef = useRef(null);
 
+  // 🔁 Image cycle
   useEffect(() => {
     setShowButton(false);
-
-    const showBtnTimer = setTimeout(() => {
-      setShowButton(true);
-    }, 200);
+    const showBtnTimer = setTimeout(() => setShowButton(true), 200);
 
     const changeImgTimer = setTimeout(() => {
-      setPrevImage(currentImage);
-      setCurrentImage((prev) => (prev + 1) % images.length);
+      setCurrentIndex((prev) => (prev + 1) % images.length);
     }, 4000);
 
     return () => {
       clearTimeout(showBtnTimer);
       clearTimeout(changeImgTimer);
     };
-  }, [currentImage, images.length]);
+  }, [currentIndex, images.length]);
 
+  // ⭕ Button ellipse animation
   useEffect(() => {
     if (!showButton) return;
     const buttonEl = buttonEllipseRef.current;
@@ -88,7 +86,6 @@ const JoinWaitlist = () => {
     }
 
     buttonRafRef.current = requestAnimationFrame(animate);
-
     return () => {
       if (buttonRafRef.current) cancelAnimationFrame(buttonRafRef.current);
     };
@@ -153,24 +150,24 @@ const JoinWaitlist = () => {
         </div>
       </div>
 
-      {/* RIGHT SIDE with smooth fade */}
+      {/* RIGHT SIDE with smooth transition */}
       <div className="waitlist-right">
-        {prevImage !== null && (
-          <div
-            key={prevImage}
-            className="fade-image previous"
-            style={{
-              backgroundImage: `linear-gradient(0deg, rgba(22, 22, 22, 0.35), rgba(22, 22, 22, 0.35)), url(${images[prevImage]})`
-            }}
-          />
-        )}
-        <div
-          key={currentImage}
-          className="fade-image current"
-          style={{
-            backgroundImage: `linear-gradient(0deg, rgba(22, 22, 22, 0.35), rgba(22, 22, 22, 0.35)), url(${images[currentImage]})`
-          }}
-        />
+        <div className="oval-image-wrapper">
+          {images.map((img, index) => (
+            <div
+              key={index}
+              className={`oval-image ${
+                currentIndex === index ? "active" : ""
+              }`}
+              style={{
+                backgroundImage: `linear-gradient(0deg, rgba(22, 22, 22, 0.35), rgba(22, 22, 22, 0.35)), url(${img})`
+              }}
+              onAnimationEnd={() => {
+                if (index === 0) setFirstImageAnimating(false);
+              }}
+            />
+          ))}
+        </div>
 
         <div className="right-content">
           {showButton && (
@@ -193,7 +190,7 @@ const JoinWaitlist = () => {
                 />
               </svg>
               <div className="button-text2">
-                {buttonLabels[currentImage]}
+                {buttonLabels[currentIndex]}
               </div>
             </div>
           )}
