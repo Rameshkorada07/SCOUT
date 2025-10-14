@@ -1,14 +1,48 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./ExploreNomad.css";
 import { ArrowRight } from "lucide-react"; // arrow icon
 import { useNavigate } from "react-router-dom";
+import { useWaitlistCount } from "@/hooks/useWaitlistCount";
 
 const ExploreNomad = () => {
   const navigate = useNavigate();
+  const { count, targetCount, percentage, isLoading } = useWaitlistCount();
+  const [displayCount, setDisplayCount] = useState(count);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const prevCountRef = useRef(count);
+
+  // Animate number counting
+  useEffect(() => {
+    if (prevCountRef.current !== count) {
+      setIsUpdating(true);
+      
+      const startCount = prevCountRef.current;
+      const endCount = count;
+      const duration = 800; // 800ms animation
+      const steps = 30;
+      const increment = (endCount - startCount) / steps;
+      let currentStep = 0;
+
+      const timer = setInterval(() => {
+        currentStep++;
+        if (currentStep <= steps) {
+          setDisplayCount(Math.round(startCount + (increment * currentStep)));
+        } else {
+          setDisplayCount(endCount);
+          clearInterval(timer);
+          setIsUpdating(false);
+        }
+      }, duration / steps);
+
+      prevCountRef.current = count;
+
+      return () => clearInterval(timer);
+    }
+  }, [count]);
   return (
     <section className="explore-section">
       {/* Top Left SCOUT */}
-      <div className="top-left-brand">SCOUT</div>
+      <div className="top-left-brand" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>SCOUT</div>
 
       {/* Top Right Link */}
       <div className="top-right-link">
@@ -49,11 +83,16 @@ const ExploreNomad = () => {
 
         {/* Progress Bar */}
         <div className="progress-container">
-          <span className="progress-value">765</span>
+          <span className={`progress-value ${isUpdating ? 'updating' : ''}`}>
+            {isLoading ? "..." : displayCount}
+          </span>
           <div className="progress-bar">
-            <div className="progress-fill" style={{ width: "76%" }}></div>
+            <div 
+              className="progress-fill" 
+              style={{ width: `${percentage}%` }}
+            ></div>
           </div>
-          <span className="progress-value">1000</span>
+          <span className="progress-value">{targetCount}</span>
         </div>
 
         {/* Join Button */}

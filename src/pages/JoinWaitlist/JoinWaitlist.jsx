@@ -2,10 +2,13 @@ import { useState, useEffect, useRef } from "react";
 import React from "react";
 import "./JoinWaitlist.css";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "@/lib/supabase";
+import { toast } from "sonner";
 
 const JoinWaitlist = () => {
   const [details, setDetails] = useState({ name: "", email: "" });
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
   const images = [
@@ -91,9 +94,42 @@ const JoinWaitlist = () => {
     };
   }, [showButton]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
+    setIsSubmitting(true);
+
+    try {
+      const { data, error } = await supabase
+        .from('waitlist')
+        .insert([
+          { 
+            name: details.name.trim(), 
+            email: details.email.trim().toLowerCase() 
+          }
+        ])
+        .select();
+
+      if (error) {
+        // Check if it's a duplicate email error
+        if (error.code === '23505') {
+          toast.error("This email is already on the waitlist!");
+        } else {
+          toast.error("Something went wrong. Please try again.");
+          console.error('Supabase error:', error);
+        }
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Success!
+      console.log('Successfully added to waitlist:', data);
+      toast.success("Welcome to the Anti-Chaos Movement!");
+      setSubmitted(true);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      toast.error("Failed to join waitlist. Please try again.");
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -108,7 +144,7 @@ const JoinWaitlist = () => {
 
       {/* LEFT SIDE */}
       <div className="waitlist-left">
-        <h1 className="heading">SCOUT</h1>
+        <h1 className="heading" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>SCOUT</h1>
 
         <div className="waitlist-form">
           {submitted ? (
@@ -139,7 +175,9 @@ const JoinWaitlist = () => {
                 }
                 required
               />
-              <button type="submit">→ Join Wait-list</button>
+              <button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? "Joining..." : "→ Join Wait-list"}
+              </button>
             </form>
           )}
         </div>

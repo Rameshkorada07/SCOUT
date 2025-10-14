@@ -135,7 +135,7 @@ const LoadingReveal = () => {
     <div className="reveal-container">
       {/* Top Left Brand */}
       <div className={`brand-text ${showContent ? 'visible' : ''}`}>
-        <h1>SCOUT</h1>
+        <h1 onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>SCOUT</h1>
         <p>
           Product of <button onClick={() => navigate('/explore-nomad')}>Explore Nomad</button>
         </p>

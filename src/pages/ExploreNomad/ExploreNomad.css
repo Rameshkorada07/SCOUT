@@ -119,12 +119,32 @@ aspect-ratio: 12/13;
   .progress-fill {
     height: 100%;
     background: #000;
+    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: left;
   }
   
   .progress-value {
     font-size: 14px;
     font-weight: 500;
     color: #000;
+    transition: all 0.3s ease;
+  }
+  
+  /* Pulse animation when count updates */
+  @keyframes countPulse {
+    0%, 100% { 
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% { 
+      transform: scale(1.15);
+      opacity: 0.8;
+    }
+  }
+  
+  /* Apply pulse when value changes */
+  .progress-value.updating {
+    animation: countPulse 0.5s ease-in-out;
   }
   .explore-btn-container {
     width: 253px;

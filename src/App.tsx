@@ -7,6 +7,8 @@ import Index from "./pages/Index";
 import JoinWaitlist from "./pages/JoinWaitlist/JoinWaitlist";
 import ValuesOfWaitlist from "./pages/ValuesOfWaitlist/ValuesOfWaitlist"
 import ExploreNomad from "./pages/ExploreNomad/ExploreNomad"
+import AdminLogin from "./pages/Admin/AdminLogin";
+import AdminDashboard from "./pages/Admin/AdminDashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -22,6 +24,8 @@ const App = () => (
           <Route path="/join-waitlist" element={<JoinWaitlist />} />
           <Route path="/values-of-waitlist" element={<ValuesOfWaitlist />} />
           <Route path="/explore-nomad" element={<ExploreNomad />} />
+          <Route path="/admin" element={<AdminLogin />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
